@@ -1,0 +1,821 @@
+-- ============================================================
+-- DADOS DE TESTE
+-- ============================================================
+-- Ordem de inserção respeita as dependências de chave estrangeira.
+-- ============================================================
+
+-- =====================
+-- 1. PESSOA (15 registros: 5 pacientes + 5 residentes + 5 preceptores)
+-- =====================
+INSERT INTO PESSOA (id_pessoa, nome, CPF, data_nascimento, is_flamengo, endereco_cep, endereco_bairro, endereco_rua, endereco_numero, endereco_complemento, telefone) VALUES
+-- Pacientes (1-5)
+(1,  'Ana Maria Silva',        '123.456.789-00', '1985-03-15', TRUE,  58400010, 'Centro',             'Rua Joao Pessoa', 150,          'Apto 101', '83999887700'),
+(2,  'Carlos Eduardo Souza',   '234.567.890-11', '1972-07-22', FALSE, 58400020, 'Jardim Paulistano',  'Avenida Canal', 45,             'Casa',      '83999887701'),
+(3,  'Fernanda Oliveira Lima', '345.678.901-22', '1990-11-03', TRUE,  58400030, 'Bodocongo',          'Rua Aprigio Veloso', 882,       'Apto 304', '83999887702'),
+(4,  'João Pedro Santos',      '456.789.012-33', '1968-01-30', FALSE, 58400040, 'Catole',             'Rua Vigario Calixto', 320,      'Casa',      '83999887703'),
+(5,  'Mariana Costa Ferreira', '567.890.123-44', '1995-06-18', TRUE,  58400050, 'Liberdade',          'Rua Rodrigues Alves', 77,       'Apto 202', '83999887704'),
+-- Residentes (6-10)
+(6,  'Lucas Almeida Rocha',    '678.901.234-55', '1993-04-12', FALSE, 58400060, 'Alto Branco',        'Rua Manoel Tavares', 100,       'Casa',      '83999887705'),
+(7,  'Juliana Pereira Martins','789.012.345-66', '1991-09-25', TRUE,  58400070, 'Sandra Cavalcante',  'Rua Joao Suassuna', 234,        'Apto 12',  '83999887706'),
+(8,  'Rafael Santos Lima',     '890.123.456-77', '1994-02-08', FALSE, 58400080, 'Itarare',            'Rua Sebastiao Donato', 56,      'Casa',      '83999887707'),
+(9,  'Camila Rodrigues Dias',  '901.234.567-88', '1992-12-01', TRUE,  58400090, 'Lauritzen',          'Rua Campos Sales', 189,         'Apto 501', '83999887708'),
+(10, 'Thiago Nascimento',      '012.345.678-99', '1995-08-14', FALSE, 58400100, 'Sao Jose',           'Rua Teodosio de Oliveira', 42,  'Casa',      '83999887709'),
+-- Preceptores (11-15)
+(11, 'Dr. Roberto Medeiros',   '111.222.333-44', '1975-05-20', FALSE, 58400110, 'Bela Vista',         'Rua Cel. Joao Figueiredo', 225, 'Casa',      '83999887710'),
+(12, 'Dra. Patrícia Campos',   '222.333.444-55', '1978-10-07', TRUE,  58400120, 'Malvinas',           'Rua Raimundo Nonato', 88,       'Apto 303', '83999887711'),
+(13, 'Dr. Fernando Barbosa',   '333.444.555-66', '1970-03-19', FALSE, 58400130, 'Serrotao',           'Rua Ze Lins', 15,               'Casa',      '83999887712'),
+(14, 'Dra. Beatriz Monteiro',  '444.555.666-77', '1980-07-11', TRUE,  58400140, 'Palmeira',           'Rua Santa Clara', 555,          'Apto 102', '83999887713'),
+(15, 'Dr. André Carvalho',     '555.666.777-88', '1973-01-28', FALSE, 58400150, 'Santa Rosa',         'Rua Jose Pinheiro', 333,        'Casa',      '83999887714');
+
+-- =====================
+-- 2. PACIENTE (5 registros)
+-- =====================
+INSERT INTO PACIENTE (id_pessoa, num_convenio, grupo_sanguineo, data_hora_entrada, data_hora_saida, leito) VALUES
+(1, 10001, 'A+',  '2025-06-28 14:00:00', NULL,                    101),
+(2, 10002, 'O-',  '2025-06-29 10:30:00', '2026-06-30 11:00:00',   204),
+(3, 10003, 'B+',  '2025-06-30 08:00:00', NULL,                    305),
+(4, 10004, 'AB+', '2025-06-27 16:00:00', '2025-07-10 09:00:00',   115),
+(5, 10005, 'A-',  '2025-06-30 22:00:00', '2026-05-25 14:00:00',   210);
+
+-- =====================
+-- 3. PROFISSIONAL (10 registros: residentes + preceptores)
+-- =====================
+INSERT INTO PROFISSIONAL (id_pessoa, CRM, data_admissao, especialidade) VALUES
+-- Residentes (6-10)
+(6,  10001, '2022-01-10', 'Clínica Médica'),
+(7,  10002, '2022-02-15', 'Pediatria'),
+(8,  10003, '2022-01-10', 'Cirurgia Geral'),
+(9,  10004, '2022-03-01', 'Ginecologia'),
+(10, 10005, '2022-01-10', 'Emergenciologia'),
+-- Preceptores (11-15)
+(11, 20001, '2010-06-01', 'Clínica Médica'),
+(12, 20002, '2012-03-20', 'Pediatria'),
+(13, 20003, '2008-09-15', 'Cirurgia Geral'),
+(14, 20004, '2014-01-10', 'Ginecologia'),
+(15, 20005, '2011-07-05', 'Emergenciologia');
+
+-- =====================
+-- 4. RESIDENTE (5 registros)
+-- =====================
+INSERT INTO RESIDENTE (id_profissional, ano_residencia) VALUES
+(6,  'R3'),
+(7,  'R3'),
+(8,  'R2'),
+(9,  'R2'),
+(10, 'R1');
+
+-- =====================
+-- 5. PRECEPTOR (5 registros)
+-- =====================
+INSERT INTO PRECEPTOR (id_profissional, titulacao) VALUES
+(11, 'Mestre'),
+(12, 'Doutora'),
+(13, 'Especialista'),
+(14, 'Mestre'),
+(15, 'Doutor');
+
+-- =====================
+-- 6. UNIDADE (3 registros)
+-- =====================
+INSERT INTO UNIDADE (id_unidade, nome, tipo, capacidade_leitos) VALUES
+(1, 'Unidade de Terapia Intensiva Central', 'UTI',             20),
+(2, 'Pronto Socorro Municipal',             'Pronto Socorro',  40),
+(3, 'Enfermaria Geral do 3º andar',         'Enfermaria',      30);
+
+-- =====================
+-- 7. PROCEDIMENTO (10 registros)
+-- =====================
+INSERT INTO PROCEDIMENTO (id_procedimento, codigo, nome, tempo_medio_minutos, faturamento_unitario, risco) VALUES
+(1,  101, 'Avaliação clínica inicial',          30, 150.00, 'BAIXO'),
+(2,  102, 'Coleta de sangue venoso',            15, 30.00, 'BAIXO'),
+(3,  103, 'Eletrocardiograma',                  20, 80.00, 'BAIXO'),
+(4,  104, 'Raio-X de tórax',                    25, 120.00, 'BAIXO'),
+(5,  105, 'Curativo de ferida',                 20, 45.00, 'BAIXO'),
+(6,  106, 'Administração de medicamento IV',    10, 90.00, 'MEDIO'),
+(7,  107, 'Punção lombar',                      40, 350.00, 'MEDIO'),
+(8,  108, 'Drenagem de derrame pleural',        45, 600.00, 'ALTO'),
+(9,  109, ' sutura de ferimento',               35, 180.00, 'BAIXO'),
+(10, 110, 'Intubação orotraqueal',              15, 500.00, 'ALTO');
+
+-- =====================
+-- 8. ATENDIMENTO (10 registros)
+-- =====================
+INSERT INTO ATENDIMENTO (id_atendimento, data_hora, duracao_minutos, id_paciente, id_residente, id_preceptor) VALUES
+(1,  '2025-07-01 08:00:00', 60,  1,  6, 11.00),
+(2,  '2025-07-01 09:30:00', 45,  2,  7, 12.00),
+(3,  '2025-07-01 10:15:00', 90,  3,  8, 13.00),
+(4,  '2025-07-01 14:00:00', 30,  4,  9, 14.00),
+(5,  '2025-07-01 15:30:00', 50,  5,  10, 15.00),
+(6,  '2025-07-02 07:45:00', 75,  1,  7, 11.00),
+(7,  '2025-07-02 08:30:00', 40,  2,  8, 12.00),
+(8,  '2025-07-02 11:00:00', 55,  3,  9, 13.00),
+(9,  '2025-07-02 13:15:00', 35,  4,  10, 14.00),
+(10, '2025-07-02 16:00:00', 65,  5,  6, 15.00);
+
+-- =====================
+-- 9. PROCEDIMENTO_REALIZADO (12 registros)
+-- =====================
+INSERT INTO PROCEDIMENTO_REALIZADO (id_atendimento, id_procedimento, quantidade, tempo_real_minutos, observacao, faturamento_total) VALUES
+(1,  1,  1, 35,  'Avaliação de rotina, paciente estável', 150.00),
+(1,  2,  2, 18,  'Duas amostras coletadas para hemograma e bioquímica', 60.00),
+(2,  3,  1, 22,  'ECG normal, ritmo sinusal', 80.00),
+(3,  4,  1, 30,  'Radiografia revelou infiltrado no lobo inferior direito', 120.00),
+(3,  1,  1, 40,  'Avaliação prolongada devido à complexidade do quadro', 200.00),
+(4,  5,  1, 15,  'Curativo simples, troca de bandagem', 45.00),
+(5,  6,  3, 12,  'Três antibióticos administrados por via intravenosa', 250.00),
+(6,  7,  1, 50,  'Punção lombar realizada sem intercorrências', 350.00),
+(7,  2,  1, 10,  'Coleta para controle de glicemia',                             NULL),
+(8,  6,  1, 50,  'Medicacao IV para drenagem de liquido seroso', 90.00),
+(9,  9,  2, 40,  'Dois pontos de sutura em ferimento no antebraço', 180.00),
+(10, 10, 1, 20,  'Intubação de emergência, evolução satisfatoria', 500.00);
+
+-- =====================
+-- 10. ESCALA (8 registros)
+-- =====================
+INSERT INTO ESCALA (id_escala, id_unidade, dia_semana, turno, id_residente, id_preceptor) VALUES
+(1,  1, 'Segunda', 'Manha', 6, 11.00),
+(2,  1, 'Segunda', 'Tarde', 7, 12.00),
+(3,  1, 'Terca',   'Manha', 8, 13.00),
+(4,  2, 'Terca',   'Noite', 9, 14.00),
+(5,  3, 'Quarta',  'Manha', 10, 15.00),
+(6,  1, 'Quarta',  'Tarde', 6, 12.00),
+(7,  2, 'Quinta',  'Manha', 7, 13.00),
+(8,  3, 'Sexta',   'Noite', 8, 11.00);
+
+-- =====================
+-- 11. ALERGIAS (7 registros)
+-- =====================
+INSERT INTO ALERGIAS (id_paciente, alergia) VALUES
+(1, 'Penicilina'),
+(1, 'Dipirona'),
+(2, 'Sulfas'),
+(3, 'Latex'),
+(3, 'Iodo'),
+(4, 'Aspirina'),
+(5, 'Nenhuma alergia conhecida');
+
+-- ============================================================
+-- DADOS ADICIONAIS DE TESTE
+-- ============================================================
+
+-- =====================
+-- 12. PESSOA (10 novos: 5 pacientes + 3 residentes + 2 preceptores)
+-- =====================
+INSERT INTO PESSOA (id_pessoa, nome, CPF, data_nascimento, is_flamengo, endereco_cep, endereco_bairro, endereco_rua, endereco_numero, endereco_complemento, telefone) VALUES
+-- Pacientes adicionais (16-20)
+(16, 'Beatriz Souza Mendes',     '112.233.445-56', '1980-09-10', FALSE, 58400160, 'Monte Santo',      'Rua Floriano Peixoto', 120,         'Apto 201', '83999887715'),
+(17, 'Gustavo Henrique Alves',   '223.344.556-67', '1965-12-25', TRUE,  58400170, 'Pedregal',         'Rua Joao Quirino', 67,              'Casa',      '83999887716'),
+(18, 'Larissa Ribeiro Costa',    '334.455.567-78', '2000-02-14', FALSE, 58400180, 'Tambor',           'Rua Maciel Pinheiro', 400,          'Apto 15',  '83999887717'),
+(19, 'Marcos Vinícius Pinto',    '445.566.678-89', '1958-06-30', TRUE,  58400190, 'Dinamérica',       'Rua Antenor Navarro', 25,           'Casa',      '83999887718'),
+(20, 'Priscila Araújo Tavares',  '556.677.789-90', '1988-04-05', FALSE, 58400200, 'Cruzeiro',         'Rua Cardoso Vieira', 180,           'Apto 504', '83999887719'),
+-- Residentes adicionais (21-23)
+(21, 'Felipe Moura Santos',      '667.788.890-01', '1996-01-20', TRUE,  58400210, 'Cj. Professores',  'Rua Conego Pequeno', 99,            'Casa',      '83999887720'),
+(22, 'Isabela Cristina Duarte',  '778.899.901-12', '1993-07-15', FALSE, 58400220, 'Nova Brasília',    'Rua Professor Almeida', 12,         'Apto 401', '83999887721'),
+(23, 'Rodrigo Lima Ferreira',    '889.900.012-23', '1994-11-08', TRUE,  58400230, 'Mirante',          'Rua Ver. Manoel Uchoa', 300,        'Casa',      '83999887722'),
+-- Preceptores adicionais (24-25)
+(24, 'Dra. Carolina Mendes',     '990.011.123-34', '1982-03-12', TRUE,  58400240, 'Acácio Figueiredo','Rua Joao Rodrigues', 45,            'Apto 202', '83999887723'),
+(25, 'Dr. Eduardo Nascimento',   '001.122.234-45', '1976-08-22', FALSE, 58400250, 'Cidades',          'Rua Antonio Joaquim Pequeno', 88,   'Casa',      '83999887724'),
+(26, 'Dr. Negão', '158.135.570-90', '2006-01-21', FALSE, 58400123, 'Catole', 'Rua Cristina Procopio', 761, 'Casa', '83986046030');
+
+-- =====================
+-- 13. PACIENTE (5 novos registros)
+-- =====================
+INSERT INTO PACIENTE (id_pessoa, num_convenio, grupo_sanguineo, data_hora_entrada, data_hora_saida, leito) VALUES
+(16, 10006, 'O+',  '2025-07-02 07:00:00', '2025-07-08 10:00:00', 108.00),
+(17, 10007, 'B-',  '2025-07-01 03:00:00', NULL, 312.00),
+(18, 10008, 'A+',  '2025-07-03 11:00:00', '2025-07-15 16:00:00', 220.00),
+(19, 10009, 'AB-', '2025-07-02 20:00:00', NULL, 117.00),
+(20, 10010, 'O+',  '2025-07-03 09:00:00', '2026-06-28 10:00:00', 303.00);
+
+-- =====================
+-- 14. PROFISSIONAL (5 novos: 3 residentes + 2 preceptores)
+-- =====================
+INSERT INTO PROFISSIONAL (id_pessoa, CRM, data_admissao, especialidade) VALUES
+-- Residentes adicionais (21-23)
+(21, 10006, '2023-01-10', 'Ortopedia'),
+(22, 10007, '2023-02-01', 'Neurologia'),
+(23, 10008, '2023-01-10', 'Clínica Médica'),
+-- Preceptores adicionais (24-25)
+(24, 20006, '2015-04-15', 'Ortopedia'),
+(25, 20007, '2013-11-01', 'Neurologia');
+
+-- =====================
+-- 15. RESIDENTE (3 novos registros)
+-- =====================
+INSERT INTO RESIDENTE (id_profissional, ano_residencia) VALUES
+(21, 'R1'),
+(22, 'R1'),
+(23, 'R2');
+
+-- =====================
+-- 16. PRECEPTOR (2 novos registros)
+-- =====================
+INSERT INTO PRECEPTOR (id_profissional, titulacao) VALUES
+(24, 'Doutora'),
+(25, 'Mestre');
+
+-- =====================
+-- 17. UNIDADE (2 novos registros)
+-- =====================
+INSERT INTO UNIDADE (id_unidade, nome, tipo, capacidade_leitos) VALUES
+(4, 'Ambulatório de Especialidades Centro', 'Ambulatorio', 15.00),
+(5, 'Enfermaria Cirúrgica do 5º andar',     'Enfermaria', 25.00);
+
+-- =====================
+-- 18. PROCEDIMENTO (5 novos registros)
+-- =====================
+INSERT INTO PROCEDIMENTO (id_procedimento, codigo, nome, tempo_medio_minutos, faturamento_unitario, risco) VALUES
+(11, 111, 'Ultrassonografia abdominal',       30, 180.00, 'BAIXO'),
+(12, 112, 'Tomografia computadorizada',        45, 450.00, 'MEDIO'),
+(13, 113, 'Prova de função pulmonar',           25, 90.00, 'BAIXO'),
+(14, 114, 'Exame de fundo de olho',             20, 120.00, 'BAIXO'),
+(15, 115, 'Transfusão sanguínea',               60, 380.00, 'MEDIO');
+
+-- =====================
+-- 19. ATENDIMENTO (10 novos registros — Julho 2025)
+-- =====================
+INSERT INTO ATENDIMENTO (id_atendimento, data_hora, duracao_minutos, id_paciente, id_residente, id_preceptor) VALUES
+-- Dia 03/07
+(11, '2025-07-03 08:00:00', 45, 16, 21, 24.00),
+(12, '2025-07-03 09:30:00', 60, 17, 22, 25.00),
+(13, '2025-07-03 11:00:00', 30, 18, 23, 11.00),
+-- Dia 04/07
+(14, '2025-07-04 07:45:00', 55, 19,  6, 12.00),
+(15, '2025-07-04 10:00:00', 40, 20,  7, 13.00),
+(16, '2025-07-04 14:00:00', 70,  1,  8, 14.00),
+-- Dia 07/07 (Segunda)
+(17, '2025-07-07 08:15:00', 50,  2,  9, 15.00),
+(18, '2025-07-07 13:00:00', 35,  3, 10, 24.00),
+-- Dia 08/07
+(19, '2025-07-08 09:00:00', 80,  4, 21, 25.00),
+(20, '2025-07-08 15:30:00', 45,  5, 22, 11.00);
+
+-- =====================
+-- 20. PROCEDIMENTO_REALIZADO (14 novos registros)
+-- =====================
+INSERT INTO PROCEDIMENTO_REALIZADO (id_atendimento, id_procedimento, quantidade, tempo_real_minutos, observacao, faturamento_total) VALUES
+(11,  1,  1, 30,  'Avaliação ortopédica de joelho direito', 150.00),
+(11, 11,  1, 35,  'Ultrassonografia para investigação de lesão meniscal', 180.00),
+(12,  1,  1, 25,  'Avaliação neurológica inicial',                                  NULL),
+(12, 14,  1, 22,  'Exame de fundo de olho sem alterações', 120.00),
+(13,  2,  1, 12,  'Coleta para hemograma completo', 30.00),
+(14,  3,  1, 18,  'ECG mostrando extrassístoles eventuais', 80.00),
+(14, 13,  1, 28,  'Prova de função pulmonar com resultado leve', 90.00),
+(15,  1,  1, 32,  'Avaliação clínica de rotina pós-operatória', 150.00),
+(16,  4,  1, 25,  'Raio-X de tórax de acompanhamento',                              NULL),
+(16,  6,  2, 15,  'Medicação IV para controle de dor', 180.00),
+(17,  2,  1, 14,  'Coleta para painel bioquímico', 30.00),
+(18,  5,  1, 18,  'Curativo em ferida cirúrgica', 45.00),
+(19, 12,  1, 50,  'TC de crânio para investigação de cefaleia', 450.00),
+(20, 15,  1, 65,  'Transfusão de 300ml de concentrado de hemácias', 380.00);
+
+-- =====================
+-- 21. ESCALA (6 novos registros)
+-- =====================
+INSERT INTO ESCALA (id_escala, id_unidade, dia_semana, turno, id_residente, id_preceptor) VALUES
+(9,  4, 'Segunda', 'Manha', 21, 24.00),
+(10, 4, 'Terca',   'Tarde', 22, 25.00),
+(11, 5, 'Quarta',  'Manha', 23, 11.00),
+(12, 2, 'Quinta',  'Noite', 6, 14.00),
+(13, 3, 'Sexta',   'Manha', 7, 15.00),
+(14, 1, 'Sabado',  'Manha', 8, 12.00);
+
+-- =====================
+-- 22. ALERGIAS (6 novos registros)
+-- =====================
+INSERT INTO ALERGIAS (id_paciente, alergia) VALUES
+(16,  'Amoxicilina'),
+(16,  'Ibuprofeno'),
+(17,  'Dipirona'),
+(18,  'Nenhuma alergia conhecida'),
+(19,  'Contraste iodado'),
+(20, 'Omeprazol');
+
+-- ============================================================
+-- DADOS ADICIONAIS -- ATENDIMENTOS (Jan-Jun 2026, ~200 registros)
+-- ============================================================
+-- Distribuicao ponderada: preceptores e residentes variam
+-- em carga de trabalho entre os meses.
+-- ============================================================
+
+-- =====================
+-- 23. ATENDIMENTO -- Janeiro 2026 (IDs 21-54, 34 registros)
+-- =====================
+INSERT INTO ATENDIMENTO (id_atendimento, data_hora, duracao_minutos, id_paciente, id_residente, id_preceptor) VALUES
+(21, '2026-01-08 07:30:00', 75, 3, 7, 15.00),
+(22, '2026-01-06 07:30:00', 25, 3, 9, 11.00),
+(23, '2026-01-05 15:00:00', 30, 17, 8, 11.00),
+(24, '2026-01-20 13:30:00', 40, 19, 21, 14.00),
+(25, '2026-01-30 16:00:00', 45, 16, 21, 11.00),
+(26, '2026-01-14 15:30:00', 25, 4, 9, 24.00),
+(27, '2026-01-07 13:30:00', 70, 2, 21, 11.00),
+(28, '2026-01-06 09:00:00', 20, 19, 8, 11.00),
+(29, '2026-01-23 08:30:00', 40, 2, 21, 14.00),
+(30, '2026-01-21 10:00:00', 35, 20, 6, 13.00),
+(31, '2026-01-22 13:30:00', 25, 4, 10, 13.00),
+(32, '2026-01-08 14:00:00', 60, 18, 21, 12.00),
+(33, '2026-01-15 13:00:00', 30, 16, 6, 14.00),
+(34, '2026-01-28 15:00:00', 60, 20, 10, 13.00),
+(35, '2026-01-07 08:00:00', 75, 5, 6, 15.00),
+(36, '2026-01-28 08:30:00', 40, 16, 10, 25.00),
+(37, '2026-01-21 14:00:00', 70, 4, 23, 13.00),
+(38, '2026-01-14 13:30:00', 35, 1, 21, 11.00),
+(39, '2026-01-26 09:00:00', 60, 2, 23, 14.00),
+(40, '2026-01-13 08:00:00', 25, 17, 8, 12.00),
+(41, '2026-01-08 07:30:00', 50, 18, 22, 11.00),
+(42, '2026-01-23 09:00:00', 25, 5, 22, 14.00),
+(43, '2026-01-14 08:30:00', 50, 5, 7, 12.00),
+(44, '2026-01-23 09:30:00', 50, 17, 21, 24.00),
+(45, '2026-01-06 13:30:00', 75, 16, 21, 11.00),
+(46, '2026-01-12 08:00:00', 65, 1, 22, 12.00),
+(47, '2026-01-06 13:30:00', 25, 5, 10, 13.00),
+(48, '2026-01-19 09:00:00', 40, 4, 21, 12.00),
+(49, '2026-01-08 08:00:00', 60, 3, 7, 25.00),
+(50, '2026-01-12 11:00:00', 60, 18, 10, 25.00),
+(51, '2026-01-28 09:30:00', 70, 2, 22, 12.00),
+(52, '2026-01-19 09:00:00', 70, 17, 7, 13.00),
+(53, '2026-01-15 07:30:00', 20, 4, 6, 25.00),
+(54, '2026-01-22 13:00:00', 20, 2, 23, 15.00);
+
+-- =====================
+-- 24. ATENDIMENTO -- Fevereiro 2026 (IDs 55-86, 32 registros)
+-- =====================
+INSERT INTO ATENDIMENTO (id_atendimento, data_hora, duracao_minutos, id_paciente, id_residente, id_preceptor) VALUES
+(55, '2026-02-26 13:00:00', 30, 5, 6, 13.00),
+(56, '2026-02-10 14:00:00', 35, 17, 8, 14.00),
+(57, '2026-02-11 15:30:00', 30, 20, 22, 24.00),
+(58, '2026-02-19 15:00:00', 70, 19, 22, 13.00),
+(59, '2026-02-03 15:30:00', 55, 3, 22, 13.00),
+(60, '2026-02-18 10:00:00', 40, 19, 23, 13.00),
+(61, '2026-02-25 10:00:00', 20, 2, 23, 12.00),
+(62, '2026-02-17 14:30:00', 45, 5, 23, 11.00),
+(63, '2026-02-02 13:00:00', 60, 17, 23, 15.00),
+(64, '2026-02-27 10:00:00', 70, 19, 21, 13.00),
+(65, '2026-02-25 08:30:00', 35, 5, 23, 15.00),
+(66, '2026-02-02 09:30:00', 40, 3, 22, 14.00),
+(67, '2026-02-10 13:00:00', 55, 18, 23, 15.00),
+(68, '2026-02-27 10:00:00', 25, 19, 21, 15.00),
+(69, '2026-02-23 13:30:00', 25, 5, 22, 14.00),
+(70, '2026-02-11 08:30:00', 70, 17, 23, 24.00),
+(71, '2026-02-24 11:00:00', 20, 16, 23, 12.00),
+(72, '2026-02-25 13:30:00', 45, 20, 23, 14.00),
+(73, '2026-02-25 11:00:00', 30, 18, 9, 13.00),
+(74, '2026-02-24 11:00:00', 70, 3, 9, 15.00),
+(75, '2026-02-06 08:30:00', 35, 4, 7, 12.00),
+(76, '2026-02-19 07:30:00', 35, 19, 9, 24.00),
+(77, '2026-02-17 09:30:00', 50, 19, 23, 13.00),
+(78, '2026-02-12 10:30:00', 55, 1, 8, 15.00),
+(79, '2026-02-06 13:30:00', 60, 1, 9, 14.00),
+(80, '2026-02-03 09:30:00', 50, 4, 9, 13.00),
+(81, '2026-02-19 09:30:00', 25, 5, 21, 11.00),
+(82, '2026-02-03 15:00:00', 20, 20, 7, 11.00),
+(83, '2026-02-05 13:30:00', 35, 5, 8, 13.00),
+(84, '2026-02-09 09:30:00', 25, 16, 23, 14.00),
+(85, '2026-02-10 08:00:00', 65, 17, 10, 11.00),
+(86, '2026-02-26 15:00:00', 20, 4, 9, 13.00);
+
+-- =====================
+-- 25. ATENDIMENTO -- Marco 2026 (IDs 87-120, 34 registros)
+-- =====================
+INSERT INTO ATENDIMENTO (id_atendimento, data_hora, duracao_minutos, id_paciente, id_residente, id_preceptor) VALUES
+(87, '2026-03-23 08:00:00', 50, 20, 21, 24.00),
+(88, '2026-03-12 13:30:00', 60, 18, 10, 24.00),
+(89, '2026-03-04 09:30:00', 55, 3, 10, 15.00),
+(90, '2026-03-16 08:30:00', 55, 3, 22, 13.00),
+(91, '2026-03-24 09:00:00', 25, 3, 9, 15.00),
+(92, '2026-03-23 11:00:00', 20, 1, 7, 15.00),
+(93, '2026-03-24 10:00:00', 50, 20, 10, 13.00),
+(94, '2026-03-10 10:00:00', 25, 18, 23, 15.00),
+(95, '2026-03-24 13:30:00', 40, 20, 22, 13.00),
+(96, '2026-03-12 07:30:00', 20, 16, 21, 12.00),
+(97, '2026-03-13 11:00:00', 55, 5, 7, 11.00),
+(98, '2026-03-18 11:00:00', 25, 16, 21, 12.00),
+(99, '2026-03-25 15:00:00', 50, 17, 22, 12.00),
+(100, '2026-03-13 15:30:00', 65, 20, 8, 15.00),
+(101, '2026-03-10 14:00:00', 35, 3, 6, 13.00),
+(102, '2026-03-27 11:00:00', 40, 1, 8, 13.00),
+(103, '2026-03-12 15:00:00', 70, 16, 22, 12.00),
+(104, '2026-03-12 15:30:00', 30, 1, 7, 13.00),
+(105, '2026-03-20 14:30:00', 40, 17, 23, 15.00),
+(106, '2026-03-19 14:30:00', 45, 17, 6, 12.00),
+(107, '2026-03-31 15:30:00', 40, 16, 21, 12.00),
+(108, '2026-03-09 13:30:00', 50, 17, 10, 11.00),
+(109, '2026-03-09 10:00:00', 50, 17, 8, 25.00),
+(110, '2026-03-16 09:30:00', 45, 2, 21, 24.00),
+(111, '2026-03-10 13:00:00', 45, 17, 10, 14.00),
+(112, '2026-03-13 11:00:00', 75, 5, 6, 15.00),
+(113, '2026-03-19 08:00:00', 35, 20, 23, 14.00),
+(114, '2026-03-13 13:00:00', 75, 3, 22, 25.00),
+(115, '2026-03-27 13:00:00', 75, 19, 22, 13.00),
+(116, '2026-03-02 09:30:00', 75, 3, 10, 25.00),
+(117, '2026-03-23 10:00:00', 45, 16, 10, 14.00),
+(118, '2026-03-11 13:30:00', 50, 3, 21, 11.00),
+(119, '2026-03-31 15:00:00', 70, 20, 10, 11.00),
+(120, '2026-03-20 08:00:00', 60, 20, 6, 12.00);
+
+-- =====================
+-- 26. ATENDIMENTO -- Abril 2026 (IDs 121-153, 33 registros)
+-- =====================
+INSERT INTO ATENDIMENTO (id_atendimento, data_hora, duracao_minutos, id_paciente, id_residente, id_preceptor) VALUES
+(121, '2026-04-15 13:30:00', 75, 4, 6, 13.00),
+(122, '2026-04-29 14:30:00', 55, 19, 6, 11.00),
+(123, '2026-04-03 10:30:00', 25, 18, 22, 11.00),
+(124, '2026-04-02 10:00:00', 20, 3, 9, 11.00),
+(125, '2026-04-17 13:30:00', 70, 3, 23, 11.00),
+(126, '2026-04-30 07:30:00', 55, 20, 22, 11.00),
+(127, '2026-04-20 14:30:00', 40, 5, 8, 25.00),
+(128, '2026-04-27 09:30:00', 75, 3, 23, 24.00),
+(129, '2026-04-22 15:30:00', 40, 18, 8, 25.00),
+(130, '2026-04-30 15:00:00', 75, 18, 22, 11.00),
+(131, '2026-04-27 10:00:00', 75, 2, 23, 13.00),
+(132, '2026-04-23 13:00:00', 40, 19, 8, 25.00),
+(133, '2026-04-15 15:00:00', 25, 5, 6, 24.00),
+(134, '2026-04-24 10:00:00', 25, 18, 6, 15.00),
+(135, '2026-04-29 10:00:00', 25, 17, 10, 15.00),
+(136, '2026-04-29 15:30:00', 55, 20, 8, 13.00),
+(137, '2026-04-06 09:00:00', 60, 2, 10, 24.00),
+(138, '2026-04-07 16:00:00', 50, 17, 23, 15.00),
+(139, '2026-04-16 08:00:00', 70, 4, 23, 15.00),
+(140, '2026-04-21 08:00:00', 70, 3, 21, 25.00),
+(141, '2026-04-27 09:00:00', 25, 19, 10, 15.00),
+(142, '2026-04-28 07:30:00', 40, 19, 7, 11.00),
+(143, '2026-04-07 07:30:00', 45, 18, 8, 13.00),
+(144, '2026-04-06 14:30:00', 25, 5, 22, 14.00),
+(145, '2026-04-02 14:30:00', 70, 16, 10, 25.00),
+(146, '2026-04-06 11:00:00', 75, 20, 6, 11.00),
+(147, '2026-04-24 14:30:00', 45, 4, 21, 13.00),
+(148, '2026-04-29 14:00:00', 60, 18, 7, 14.00),
+(149, '2026-04-17 10:30:00', 75, 1, 9, 24.00),
+(150, '2026-04-03 10:30:00', 25, 18, 9, 11.00),
+(151, '2026-04-20 10:00:00', 70, 20, 9, 25.00),
+(152, '2026-04-27 13:00:00', 35, 2, 10, 25.00),
+(153, '2026-04-10 15:00:00', 50, 19, 23, 25.00);
+
+-- =====================
+-- 27. ATENDIMENTO -- Maio 2026 (IDs 154-187, 34 registros)
+-- =====================
+INSERT INTO ATENDIMENTO (id_atendimento, data_hora, duracao_minutos, id_paciente, id_residente, id_preceptor) VALUES
+(154, '2026-05-14 07:30:00', 30, 3, 21, 25.00),
+(155, '2026-05-28 14:00:00', 50, 1, 21, 25.00),
+(156, '2026-05-22 10:00:00', 30, 4, 21, 24.00),
+(157, '2026-05-08 08:30:00', 65, 1, 6, 13.00),
+(158, '2026-05-12 15:00:00', 60, 2, 8, 12.00),
+(159, '2026-05-15 07:30:00', 35, 4, 10, 11.00),
+(160, '2026-05-15 10:00:00', 25, 1, 21, 12.00),
+(161, '2026-05-19 08:00:00', 50, 19, 6, 11.00),
+(162, '2026-05-28 10:30:00', 75, 17, 8, 13.00),
+(163, '2026-05-19 08:00:00', 50, 19, 7, 14.00),
+(164, '2026-05-18 09:00:00', 45, 18, 6, 14.00),
+(165, '2026-05-19 10:00:00', 75, 20, 10, 12.00),
+(166, '2026-05-06 08:30:00', 70, 5, 21, 15.00),
+(167, '2026-05-18 08:30:00', 55, 1, 8, 12.00),
+(168, '2026-05-06 09:30:00', 55, 5, 6, 24.00),
+(169, '2026-05-26 10:30:00', 55, 16, 23, 15.00),
+(170, '2026-05-08 07:30:00', 55, 2, 23, 12.00),
+(171, '2026-05-26 13:00:00', 65, 2, 8, 12.00),
+(172, '2026-05-05 15:00:00', 70, 17, 6, 11.00),
+(173, '2026-05-29 15:30:00', 30, 4, 10, 12.00),
+(174, '2026-05-15 13:00:00', 50, 17, 8, 12.00),
+(175, '2026-05-21 13:00:00', 45, 1, 8, 25.00),
+(176, '2026-05-06 09:30:00', 25, 16, 9, 15.00),
+(177, '2026-05-29 08:30:00', 65, 4, 6, 24.00),
+(178, '2026-05-05 10:30:00', 45, 17, 7, 13.00),
+(179, '2026-05-25 16:00:00', 35, 4, 23, 25.00),
+(180, '2026-05-26 13:00:00', 50, 20, 22, 24.00),
+(181, '2026-05-19 13:00:00', 25, 18, 9, 12.00),
+(182, '2026-05-08 15:30:00', 50, 1, 23, 24.00),
+(183, '2026-05-20 13:00:00', 45, 3, 23, 13.00),
+(184, '2026-05-18 15:00:00', 30, 2, 8, 24.00),
+(185, '2026-05-25 11:00:00', 65, 1, 6, 12.00),
+(186, '2026-05-15 08:00:00', 20, 3, 10, 14.00),
+(187, '2026-05-04 14:00:00', 60, 16, 21, 12.00);
+
+-- =====================
+-- 28. ATENDIMENTO -- Junho 2026 (IDs 188-220, 33 registros)
+-- =====================
+INSERT INTO ATENDIMENTO (id_atendimento, data_hora, duracao_minutos, id_paciente, id_residente, id_preceptor) VALUES
+(188, '2026-06-30 14:00:00', 25, 16, 8, 25.00),
+(189, '2026-06-22 07:30:00', 70, 4, 8, 15.00),
+(190, '2026-06-29 08:00:00', 65, 18, 8, 11.00),
+(191, '2026-06-30 11:00:00', 75, 5, 7, 12.00),
+(192, '2026-06-09 16:00:00', 20, 4, 8, 14.00),
+(193, '2026-06-09 09:30:00', 45, 19, 6, 15.00),
+(194, '2026-06-17 14:30:00', 55, 19, 8, 25.00),
+(195, '2026-06-23 09:30:00', 25, 18, 6, 15.00),
+(196, '2026-06-30 09:30:00', 40, 5, 21, 12.00),
+(197, '2026-06-26 10:30:00', 40, 17, 22, 11.00),
+(198, '2026-06-30 08:30:00', 20, 2, 10, 24.00),
+(199, '2026-06-16 10:30:00', 65, 1, 7, 14.00),
+(200, '2026-06-25 08:30:00', 60, 4, 8, 13.00),
+(201, '2026-06-17 16:00:00', 60, 2, 21, 15.00),
+(202, '2026-06-22 09:00:00', 25, 2, 6, 12.00),
+(203, '2026-06-15 14:00:00', 45, 18, 9, 13.00),
+(204, '2026-06-29 08:30:00', 45, 16, 7, 12.00),
+(205, '2026-06-16 11:00:00', 60, 2, 22, 11.00),
+(206, '2026-06-18 15:30:00', 65, 1, 23, 15.00),
+(207, '2026-06-24 14:00:00', 65, 2, 23, 14.00),
+(208, '2026-06-23 08:30:00', 40, 2, 8, 15.00),
+(209, '2026-06-11 09:00:00', 70, 20, 7, 15.00),
+(210, '2026-06-08 13:30:00', 65, 2, 10, 15.00),
+(211, '2026-06-01 08:00:00', 20, 20, 21, 13.00),
+(212, '2026-06-01 11:00:00', 70, 16, 10, 13.00),
+(213, '2026-06-02 08:30:00', 55, 5, 9, 13.00),
+(214, '2026-06-16 10:30:00', 30, 18, 9, 11.00),
+(215, '2026-06-02 09:30:00', 50, 19, 9, 25.00),
+(216, '2026-06-15 09:00:00', 30, 5, 9, 14.00),
+(217, '2026-06-19 09:00:00', 35, 16, 6, 13.00),
+(218, '2026-06-04 10:30:00', 30, 19, 21, 15.00),
+(219, '2026-06-16 13:00:00', 40, 1, 9, 15.00),
+(220, '2026-06-16 15:00:00', 45, 16, 8, 12.00);
+
+-- =====================
+-- 29. PROCEDIMENTO_REALIZADO -- Atendimentos 21-220 (276 registros)
+-- =====================
+INSERT INTO PROCEDIMENTO_REALIZADO (id_atendimento, id_procedimento, quantidade, tempo_real_minutos, observacao, faturamento_total) VALUES
+(21, 11, 1, 32, 'Procedimento terapeutico de manutencao', 180.00),
+(22, 4, 2, 27, 'Exame solicitado pelo preceptor para investigacao', 240.00),
+(22, 6, 1, 14, 'Medicacao IV inicial do quadro clinico', 90.00),
+(23, 13, 1, 24, 'Coleta para exames laboratoriais de rotina', 90.00),
+(23, 2, 1, 14, 'Procedimento realizado sem intercorrencias', 30.00),
+(24, 15, 1, 60, 'Avaliacao complementar solicitada', NULL),
+(25, 4, 1, 28, 'Exame solicitado pelo preceptor para investigacao', 120.00),
+(26, 3, 1, 19, 'Acompanhamento de quadro clinico', 80.00),
+(26, 5, 1, 22, 'Procedimento de urgencia, resposta satisfatoria', NULL),
+(27, 7, 1, 39, 'Procedimento eletivo agendado', 350.00),
+(28, 15, 1, 61, 'Avaliacao complementar solicitada', 380.00),
+(28, 6, 1, 45, 'Medicacao IV para quadro infeccioso', NULL),
+(29, 12, 2, 46, 'Monitoramento continuo de sinais vitais', 900.00),
+(30, 13, 1, 22, 'Coleta para exames laboratoriais de rotina', 90.00),
+(30, 3, 1, 23, 'Acompanhamento de quadro clinico', NULL),
+(31, 5, 1, 21, 'Procedimento de urgencia, resposta satisfatoria', 45.00),
+(32, 5, 1, 20, 'Procedimento de urgencia, resposta satisfatoria', 45.00),
+(33, 14, 1, 22, 'Intervencao de suporte ao tratamento principal', NULL),
+(33, 13, 1, 23, 'Coleta para exames laboratoriais de rotina', 90.00),
+(34, 2, 1, 14, 'Procedimento realizado sem intercorrencias', 30.00),
+(34, 4, 1, 26, 'Exame solicitado pelo preceptor para investigacao', NULL),
+(35, 13, 1, 23, 'Coleta para exames laboratoriais de rotina', 90.00),
+(36, 15, 1, 61, 'Avaliacao complementar solicitada', 380.00),
+(37, 4, 1, 23, 'Exame solicitado pelo preceptor para investigacao', NULL),
+(37, 10, 1, 16, 'Avaliacao inicial do quadro clinico', 500.00),
+(38, 2, 1, 12, 'Procedimento realizado sem intercorrencias', 30.00),
+(38, 4, 1, 24, 'Exame solicitado pelo preceptor para investigacao', NULL),
+(39, 6, 2, 43, 'Medicacao IV para quadro infeccioso', 180.00),
+(40, 14, 1, 22, 'Intervencao de suporte ao tratamento principal', 120.00),
+(41, 4, 2, 23, 'Exame solicitado pelo preceptor para investigacao', NULL),
+(41, 3, 1, 19, 'Acompanhamento de quadro clinico', 80.00),
+(42, 1, 1, 32, 'Avaliacao de rotina, paciente estavel', 150.00),
+(43, 1, 2, 28, 'Avaliacao de rotina, paciente estavel', NULL),
+(43, 7, 1, 39, 'Procedimento eletivo agendado', 350.00),
+(44, 11, 2, 32, 'Procedimento terapeutico de manutencao', 360.00),
+(44, 5, 1, 18, 'Procedimento de urgencia, resposta satisfatoria', NULL),
+(45, 10, 1, 15, 'Avaliacao inicial do quadro clinico', 500.00),
+(45, 9, 1, 32, 'Controle pos-operatorio, evolucao boa', 180.00),
+(46, 15, 1, 61, 'Avaliacao complementar solicitada', NULL),
+(47, 15, 1, 59, 'Avaliacao complementar solicitada', 380.00);
+
+INSERT INTO PROCEDIMENTO_REALIZADO (id_atendimento, id_procedimento, quantidade, tempo_real_minutos, observacao, faturamento_total) VALUES
+(48, 6, 1, 13, 'Retorno para reavaliacao pos-tratamento', 90.00),
+(48, 10, 1, 16, 'Avaliacao inicial do quadro clinico', 500.00),
+(49, 15, 1, 57, 'Avaliacao complementar solicitada', NULL),
+(50, 11, 1, 31, 'Procedimento terapeutico de manutencao', 180.00),
+(51, 15, 1, 57, 'Avaliacao complementar solicitada', 380.00),
+(51, 6, 1, 13, 'Medicacao IV inicial do quadro clinico', NULL),
+(52, 15, 1, 63, 'Avaliacao complementar solicitada', 380.00),
+(52, 7, 1, 43, 'Procedimento eletivo agendado', 350.00),
+(53, 3, 2, 22, 'Acompanhamento de quadro clinico', NULL),
+(54, 3, 1, 21, 'Acompanhamento de quadro clinico', 80.00),
+(55, 15, 1, 63, 'Avaliacao complementar solicitada', 380.00),
+(56, 14, 1, 20, 'Intervencao de suporte ao tratamento principal', NULL),
+(57, 1, 1, 28, 'Avaliacao de rotina, paciente estavel', 150.00),
+(58, 13, 1, 27, 'Coleta para exames laboratoriais de rotina', 90.00),
+(59, 5, 1, 23, 'Procedimento de urgencia, resposta satisfatoria', NULL),
+(59, 11, 1, 28, 'Procedimento terapeutico de manutencao', 180.00),
+(60, 11, 2, 31, 'Procedimento terapeutico de manutencao', 360.00),
+(61, 5, 1, 17, 'Procedimento de urgencia, resposta satisfatoria', NULL),
+(62, 15, 1, 61, 'Avaliacao complementar solicitada', 380.00),
+(62, 12, 1, 45, 'Monitoramento continuo de sinais vitais', 450.00),
+(63, 4, 2, 24, 'Exame solicitado pelo preceptor para investigacao', NULL),
+(63, 11, 1, 29, 'Procedimento terapeutico de manutencao', 180.00),
+(64, 5, 2, 22, 'Procedimento de urgencia, resposta satisfatoria', 90.00),
+(64, 12, 1, 44, 'Monitoramento continuo de sinais vitais', NULL),
+(65, 15, 1, 58, 'Avaliacao complementar solicitada', 380.00),
+(66, 6, 2, 10, 'Retorno para reavaliacao pos-tratamento', 180.00),
+(67, 11, 1, 27, 'Procedimento terapeutico de manutencao', NULL),
+(68, 4, 1, 28, 'Exame solicitado pelo preceptor para investigacao', 120.00),
+(68, 1, 1, 28, 'Avaliacao de rotina, paciente estavel', 150.00),
+(69, 12, 2, 47, 'Monitoramento continuo de sinais vitais', NULL),
+(70, 15, 2, 57, 'Avaliacao complementar solicitada', 760.00),
+(70, 13, 1, 27, 'Coleta para exames laboratoriais de rotina', 90.00),
+(71, 3, 2, 23, 'Acompanhamento de quadro clinico', NULL),
+(72, 12, 2, 46, 'Monitoramento continuo de sinais vitais', 900.00),
+(73, 4, 1, 28, 'Exame solicitado pelo preceptor para investigacao', 120.00),
+(74, 4, 1, 24, 'Exame solicitado pelo preceptor para investigacao', NULL),
+(74, 9, 1, 32, 'Controle pos-operatorio, evolucao boa', 180.00),
+(75, 7, 1, 40, 'Procedimento eletivo agendado', 350.00),
+(76, 12, 2, 42, 'Monitoramento continuo de sinais vitais', NULL),
+(77, 12, 1, 47, 'Monitoramento continuo de sinais vitais', 450.00);
+
+INSERT INTO PROCEDIMENTO_REALIZADO (id_atendimento, id_procedimento, quantidade, tempo_real_minutos, observacao, faturamento_total) VALUES
+(78, 7, 1, 42, 'Procedimento eletivo agendado', 350.00),
+(79, 1, 2, 27, 'Avaliacao de rotina, paciente estavel', 300.00),
+(79, 8, 1, 43, 'Investigacao diagnostica de quadro infeccioso', NULL),
+(80, 15, 1, 60, 'Avaliacao complementar solicitada', 380.00),
+(81, 6, 1, 8, 'Retorno para reavaliacao pos-tratamento', 90.00),
+(82, 3, 1, 18, 'Acompanhamento de quadro clinico', NULL),
+(83, 10, 1, 16, 'Avaliacao inicial do quadro clinico', 500.00),
+(84, 15, 2, 60, 'Avaliacao complementar solicitada', 760.00),
+(85, 13, 1, 24, 'Coleta para exames laboratoriais de rotina', NULL),
+(86, 9, 1, 37, 'Controle pos-operatorio, evolucao boa', 180.00),
+(86, 7, 1, 43, 'Procedimento eletivo agendado', 350.00),
+(87, 12, 2, 43, 'Monitoramento continuo de sinais vitais', NULL),
+(87, 9, 1, 37, 'Controle pos-operatorio, evolucao boa', 180.00),
+(88, 10, 1, 14, 'Avaliacao inicial do quadro clinico', 500.00),
+(89, 7, 1, 39, 'Procedimento eletivo agendado', NULL),
+(90, 15, 1, 61, 'Avaliacao complementar solicitada', 380.00),
+(91, 4, 2, 27, 'Exame solicitado pelo preceptor para investigacao', 240.00),
+(92, 5, 1, 22, 'Procedimento de urgencia, resposta satisfatoria', NULL),
+(93, 8, 1, 44, 'Investigacao diagnostica de quadro infeccioso', 600.00),
+(93, 2, 1, 17, 'Procedimento realizado sem intercorrencias', 30.00),
+(94, 4, 2, 23, 'Exame solicitado pelo preceptor para investigacao', NULL),
+(94, 10, 1, 18, 'Avaliacao inicial do quadro clinico', 500.00),
+(95, 6, 1, 8, 'Retorno para reavaliacao pos-tratamento', 90.00),
+(95, 9, 1, 33, 'Controle pos-operatorio, evolucao boa', NULL),
+(96, 14, 2, 23, 'Intervencao de suporte ao tratamento principal', 240.00),
+(96, 1, 1, 31, 'Avaliacao de rotina, paciente estavel', 150.00),
+(97, 14, 1, 20, 'Intervencao de suporte ao tratamento principal', NULL),
+(98, 13, 1, 26, 'Coleta para exames laboratoriais de rotina', 90.00),
+(98, 4, 1, 22, 'Exame solicitado pelo preceptor para investigacao', 120.00),
+(99, 9, 2, 35, 'Controle pos-operatorio, evolucao boa', NULL),
+(100, 10, 1, 17, 'Avaliacao inicial do quadro clinico', 500.00),
+(101, 9, 1, 32, 'Controle pos-operatorio, evolucao boa', 180.00),
+(101, 6, 1, 47, 'Medicacao IV para quadro infeccioso', NULL),
+(102, 14, 1, 20, 'Intervencao de suporte ao tratamento principal', 120.00),
+(103, 2, 1, 16, 'Procedimento realizado sem intercorrencias', 30.00),
+(104, 12, 1, 48, 'Monitoramento continuo de sinais vitais', NULL),
+(105, 8, 1, 45, 'Investigacao diagnostica de quadro infeccioso', 600.00),
+(106, 11, 1, 33, 'Procedimento terapeutico de manutencao', 180.00),
+(107, 9, 2, 37, 'Controle pos-operatorio, evolucao boa', NULL),
+(108, 6, 1, 10, 'Retorno para reavaliacao pos-tratamento', 90.00);
+
+INSERT INTO PROCEDIMENTO_REALIZADO (id_atendimento, id_procedimento, quantidade, tempo_real_minutos, observacao, faturamento_total) VALUES
+(108, 2, 1, 18, 'Procedimento realizado sem intercorrencias', 30.00),
+(109, 14, 1, 23, 'Intervencao de suporte ao tratamento principal', 120.00),
+(110, 14, 2, 17, 'Intervencao de suporte ao tratamento principal', NULL),
+(111, 1, 1, 28, 'Avaliacao de rotina, paciente estavel', 150.00),
+(112, 13, 1, 23, 'Coleta para exames laboratoriais de rotina', 90.00),
+(112, 1, 1, 31, 'Avaliacao de rotina, paciente estavel', NULL),
+(113, 2, 1, 17, 'Procedimento realizado sem intercorrencias', 30.00),
+(114, 4, 1, 25, 'Exame solicitado pelo preceptor para investigacao', 120.00),
+(115, 13, 2, 28, 'Coleta para exames laboratoriais de rotina', NULL),
+(115, 9, 1, 34, 'Controle pos-operatorio, evolucao boa', 180.00),
+(116, 6, 1, 48, 'Medicacao IV para quadro infeccioso', 90.00),
+(117, 6, 1, 13, 'Retorno para reavaliacao pos-tratamento', NULL),
+(118, 12, 2, 45, 'Monitoramento continuo de sinais vitais', 900.00),
+(119, 9, 1, 36, 'Controle pos-operatorio, evolucao boa', 180.00),
+(120, 14, 1, 22, 'Intervencao de suporte ao tratamento principal', NULL),
+(120, 13, 1, 24, 'Coleta para exames laboratoriais de rotina', 90.00),
+(121, 11, 2, 33, 'Procedimento terapeutico de manutencao', 360.00),
+(122, 11, 1, 32, 'Procedimento terapeutico de manutencao', NULL),
+(123, 3, 1, 22, 'Acompanhamento de quadro clinico', 80.00),
+(124, 9, 1, 35, 'Controle pos-operatorio, evolucao boa', 180.00),
+(124, 2, 1, 16, 'Procedimento realizado sem intercorrencias', NULL),
+(125, 6, 1, 47, 'Medicacao IV para quadro infeccioso', 90.00),
+(126, 8, 1, 44, 'Investigacao diagnostica de quadro infeccioso', 600.00),
+(127, 14, 1, 20, 'Intervencao de suporte ao tratamento principal', NULL),
+(127, 10, 1, 14, 'Avaliacao inicial do quadro clinico', 500.00),
+(128, 5, 1, 17, 'Procedimento de urgencia, resposta satisfatoria', 45.00),
+(129, 4, 1, 27, 'Exame solicitado pelo preceptor para investigacao', NULL),
+(130, 2, 1, 17, 'Procedimento realizado sem intercorrencias', 30.00),
+(130, 8, 1, 42, 'Investigacao diagnostica de quadro infeccioso', 600.00),
+(131, 7, 1, 38, 'Procedimento eletivo agendado', NULL),
+(131, 9, 1, 34, 'Controle pos-operatorio, evolucao boa', 180.00),
+(132, 6, 1, 48, 'Medicacao IV para quadro infeccioso', 90.00),
+(133, 4, 2, 28, 'Exame solicitado pelo preceptor para investigacao', NULL),
+(134, 8, 1, 44, 'Investigacao diagnostica de quadro infeccioso', 600.00),
+(135, 9, 1, 34, 'Controle pos-operatorio, evolucao boa', 180.00),
+(136, 3, 1, 17, 'Acompanhamento de quadro clinico', NULL),
+(136, 8, 1, 42, 'Investigacao diagnostica de quadro infeccioso', 600.00),
+(137, 12, 2, 47, 'Monitoramento continuo de sinais vitais', 900.00),
+(138, 5, 1, 17, 'Procedimento de urgencia, resposta satisfatoria', NULL),
+(138, 8, 1, 43, 'Investigacao diagnostica de quadro infeccioso', 600.00);
+
+INSERT INTO PROCEDIMENTO_REALIZADO (id_atendimento, id_procedimento, quantidade, tempo_real_minutos, observacao, faturamento_total) VALUES
+(139, 1, 1, 30, 'Avaliacao de rotina, paciente estavel', 150.00),
+(139, 2, 1, 18, 'Procedimento realizado sem intercorrencias', 30.00),
+(140, 1, 1, 33, 'Avaliacao de rotina, paciente estavel', NULL),
+(140, 3, 1, 23, 'Acompanhamento de quadro clinico', 80.00),
+(141, 14, 1, 23, 'Intervencao de suporte ao tratamento principal', 120.00),
+(141, 3, 1, 23, 'Acompanhamento de quadro clinico', NULL),
+(142, 5, 1, 23, 'Procedimento de urgencia, resposta satisfatoria', 45.00),
+(142, 14, 1, 17, 'Intervencao de suporte ao tratamento principal', 120.00),
+(143, 3, 1, 19, 'Acompanhamento de quadro clinico', NULL),
+(143, 7, 1, 41, 'Procedimento eletivo agendado', 350.00),
+(144, 2, 1, 15, 'Procedimento realizado sem intercorrencias', 30.00),
+(145, 1, 2, 30, 'Avaliacao de rotina, paciente estavel', NULL),
+(146, 10, 1, 13, 'Avaliacao inicial do quadro clinico', 500.00),
+(146, 11, 1, 31, 'Procedimento terapeutico de manutencao', 180.00),
+(147, 9, 2, 36, 'Controle pos-operatorio, evolucao boa', NULL),
+(147, 12, 1, 42, 'Monitoramento continuo de sinais vitais', 450.00),
+(148, 4, 1, 25, 'Exame solicitado pelo preceptor para investigacao', 120.00),
+(149, 6, 2, 8, 'Retorno para reavaliacao pos-tratamento', NULL),
+(149, 14, 1, 17, 'Intervencao de suporte ao tratamento principal', 120.00),
+(150, 1, 1, 31, 'Avaliacao de rotina, paciente estavel', 150.00),
+(151, 1, 1, 29, 'Avaliacao de rotina, paciente estavel', NULL),
+(152, 6, 1, 13, 'Retorno para reavaliacao pos-tratamento', 90.00),
+(152, 5, 1, 21, 'Procedimento de urgencia, resposta satisfatoria', 45.00),
+(153, 6, 1, 17, 'Medicacao IV inicial do quadro clinico', NULL),
+(154, 6, 1, 7, 'Retorno para reavaliacao pos-tratamento', 90.00),
+(155, 2, 1, 17, 'Procedimento realizado sem intercorrencias', 30.00),
+(156, 10, 1, 16, 'Avaliacao inicial do quadro clinico', NULL),
+(157, 7, 2, 40, 'Procedimento eletivo agendado', 700.00),
+(158, 11, 2, 31, 'Procedimento terapeutico de manutencao', 360.00),
+(159, 5, 1, 18, 'Procedimento de urgencia, resposta satisfatoria', NULL),
+(160, 7, 1, 41, 'Procedimento eletivo agendado', 350.00),
+(161, 15, 1, 57, 'Avaliacao complementar solicitada', 380.00),
+(162, 6, 2, 8, 'Retorno para reavaliacao pos-tratamento', NULL),
+(163, 9, 2, 32, 'Controle pos-operatorio, evolucao boa', 360.00),
+(164, 9, 1, 36, 'Controle pos-operatorio, evolucao boa', 180.00),
+(165, 2, 1, 13, 'Procedimento realizado sem intercorrencias', NULL),
+(165, 10, 1, 13, 'Avaliacao inicial do quadro clinico', 500.00),
+(166, 8, 1, 47, 'Investigacao diagnostica de quadro infeccioso', 600.00),
+(167, 5, 1, 21, 'Procedimento de urgencia, resposta satisfatoria', NULL),
+(168, 2, 1, 17, 'Procedimento realizado sem intercorrencias', 30.00);
+
+INSERT INTO PROCEDIMENTO_REALIZADO (id_atendimento, id_procedimento, quantidade, tempo_real_minutos, observacao, faturamento_total) VALUES
+(169, 1, 1, 30, 'Avaliacao de rotina, paciente estavel', 150.00),
+(169, 8, 1, 46, 'Investigacao diagnostica de quadro infeccioso', 600.00),
+(170, 12, 1, 42, 'Monitoramento continuo de sinais vitais', NULL),
+(170, 6, 1, 45, 'Medicacao IV para quadro infeccioso', 90.00),
+(171, 7, 1, 43, 'Procedimento eletivo agendado', 350.00),
+(172, 11, 1, 30, 'Procedimento terapeutico de manutencao', NULL),
+(172, 14, 1, 22, 'Intervencao de suporte ao tratamento principal', 120.00),
+(173, 6, 2, 9, 'Retorno para reavaliacao pos-tratamento', 180.00),
+(173, 12, 1, 42, 'Monitoramento continuo de sinais vitais', NULL),
+(174, 12, 1, 48, 'Monitoramento continuo de sinais vitais', 450.00),
+(175, 6, 2, 13, 'Retorno para reavaliacao pos-tratamento', 180.00),
+(175, 3, 1, 18, 'Acompanhamento de quadro clinico', NULL),
+(176, 9, 1, 32, 'Controle pos-operatorio, evolucao boa', 180.00),
+(177, 13, 1, 26, 'Coleta para exames laboratoriais de rotina', 90.00),
+(178, 5, 2, 23, 'Procedimento de urgencia, resposta satisfatoria', NULL),
+(178, 4, 1, 24, 'Exame solicitado pelo preceptor para investigacao', 120.00),
+(179, 8, 1, 48, 'Investigacao diagnostica de quadro infeccioso', 600.00),
+(180, 3, 1, 23, 'Acompanhamento de quadro clinico', NULL),
+(180, 8, 1, 48, 'Investigacao diagnostica de quadro infeccioso', 600.00),
+(181, 2, 1, 18, 'Procedimento realizado sem intercorrencias', 30.00),
+(181, 15, 1, 61, 'Avaliacao complementar solicitada', NULL),
+(182, 15, 1, 59, 'Avaliacao complementar solicitada', 380.00),
+(183, 1, 1, 29, 'Avaliacao de rotina, paciente estavel', 150.00),
+(184, 12, 1, 48, 'Monitoramento continuo de sinais vitais', NULL),
+(185, 14, 2, 18, 'Intervencao de suporte ao tratamento principal', 240.00),
+(185, 5, 1, 18, 'Procedimento de urgencia, resposta satisfatoria', 45.00),
+(186, 2, 2, 12, 'Procedimento realizado sem intercorrencias', NULL),
+(187, 1, 1, 31, 'Avaliacao de rotina, paciente estavel', 150.00),
+(187, 7, 1, 38, 'Procedimento eletivo agendado', 350.00),
+(188, 9, 1, 36, 'Controle pos-operatorio, evolucao boa', NULL),
+(189, 6, 1, 13, 'Retorno para reavaliacao pos-tratamento', 90.00),
+(189, 12, 1, 47, 'Monitoramento continuo de sinais vitais', 450.00),
+(190, 9, 1, 34, 'Controle pos-operatorio, evolucao boa', NULL),
+(191, 12, 2, 48, 'Monitoramento continuo de sinais vitais', 900.00),
+(191, 4, 1, 22, 'Exame solicitado pelo preceptor para investigacao', 120.00),
+(192, 14, 2, 21, 'Intervencao de suporte ao tratamento principal', NULL),
+(192, 13, 1, 27, 'Coleta para exames laboratoriais de rotina', 90.00),
+(193, 5, 1, 17, 'Procedimento de urgencia, resposta satisfatoria', 45.00),
+(194, 6, 2, 47, 'Medicacao IV para quadro infeccioso', NULL),
+(195, 14, 1, 18, 'Intervencao de suporte ao tratamento principal', 120.00);
+
+INSERT INTO PROCEDIMENTO_REALIZADO (id_atendimento, id_procedimento, quantidade, tempo_real_minutos, observacao, faturamento_total) VALUES
+(196, 8, 2, 44, 'Investigacao diagnostica de quadro infeccioso', 1200.00),
+(196, 14, 1, 19, 'Intervencao de suporte ao tratamento principal', 120.00),
+(197, 11, 2, 32, 'Procedimento terapeutico de manutencao', NULL),
+(198, 1, 1, 28, 'Avaliacao de rotina, paciente estavel', 150.00),
+(198, 11, 1, 29, 'Procedimento terapeutico de manutencao', 180.00),
+(199, 6, 2, 9, 'Retorno para reavaliacao pos-tratamento', NULL),
+(200, 2, 1, 12, 'Procedimento realizado sem intercorrencias', 30.00),
+(201, 4, 1, 26, 'Exame solicitado pelo preceptor para investigacao', 120.00),
+(202, 12, 1, 45, 'Monitoramento continuo de sinais vitais', NULL),
+(203, 5, 1, 23, 'Procedimento de urgencia, resposta satisfatoria', 45.00),
+(204, 3, 2, 18, 'Acompanhamento de quadro clinico', 160.00),
+(204, 9, 1, 36, 'Controle pos-operatorio, evolucao boa', NULL),
+(205, 7, 2, 42, 'Procedimento eletivo agendado', 700.00),
+(206, 8, 1, 45, 'Investigacao diagnostica de quadro infeccioso', 600.00),
+(206, 14, 1, 23, 'Intervencao de suporte ao tratamento principal', NULL),
+(207, 15, 1, 63, 'Avaliacao complementar solicitada', 380.00),
+(208, 6, 1, 11, 'Retorno para reavaliacao pos-tratamento', 90.00),
+(209, 10, 1, 16, 'Avaliacao inicial do quadro clinico', NULL),
+(210, 6, 1, 14, 'Medicacao IV inicial do quadro clinico', 90.00),
+(211, 4, 2, 28, 'Exame solicitado pelo preceptor para investigacao', 240.00),
+(212, 4, 2, 28, 'Exame solicitado pelo preceptor para investigacao', NULL),
+(212, 2, 1, 17, 'Procedimento realizado sem intercorrencias', 30.00),
+(213, 3, 1, 19, 'Acompanhamento de quadro clinico', 80.00),
+(214, 4, 1, 25, 'Exame solicitado pelo preceptor para investigacao', NULL),
+(214, 3, 1, 17, 'Acompanhamento de quadro clinico', 80.00),
+(215, 15, 1, 58, 'Avaliacao complementar solicitada', 380.00),
+(216, 5, 1, 20, 'Procedimento de urgencia, resposta satisfatoria', NULL),
+(216, 7, 1, 41, 'Procedimento eletivo agendado', 350.00),
+(217, 10, 2, 18, 'Avaliacao inicial do quadro clinico', 1000.00),
+(217, 1, 1, 33, 'Avaliacao de rotina, paciente estavel', NULL),
+(218, 6, 2, 7, 'Retorno para reavaliacao pos-tratamento', 180.00),
+(218, 9, 1, 33, 'Controle pos-operatorio, evolucao boa', 180.00),
+(219, 5, 1, 23, 'Procedimento de urgencia, resposta satisfatoria', NULL),
+(219, 2, 1, 15, 'Procedimento realizado sem intercorrencias', 30.00),
+(220, 10, 2, 16, 'Avaliacao inicial do quadro clinico', 1000.00);
