@@ -6,14 +6,16 @@ CREATE TABLE IF NOT EXISTS PESSOA
 (
     id_pessoa            INT PRIMARY KEY,
     nome                 VARCHAR(100) NOT NULL,
-    CPF                  CHAR(15) UNIQUE CHECK ( LENGTH(CPF) = 14 ),
-    data_nascimento      DATE,
+    CPF                  CHAR(15) UNIQUE NOT NULL CHECK ( LENGTH(CPF) = 14 ),
+    data_nascimento      DATE NOT NULL,
     is_flamengo          BOOLEAN,
-    endereco_cep         INT          NOT NULL CHECK ( endereco_cep > 0),
-    endereco_bairro      VARCHAR(100) NOT NULL,
-    endereco_rua         VARCHAR(100) NOT NULL,
-    endereco_numero      INT          NOT NULL CHECK ( endereco_numero > 0 ),
-    endereco_complemento VARCHAR(100) NOT NULL,
+
+    -- Endereço pode ser NULL (pessoa desabrigada, por exemplo)
+    endereco_cep         INT CHECK ( endereco_cep IS NULL OR endereco_cep > 0),
+    endereco_bairro      VARCHAR(100),
+    endereco_rua         VARCHAR(100),
+    endereco_numero      INT CHECK ( endereco_numero IS NULL OR endereco_numero > 0 ),
+    endereco_complemento VARCHAR(100),
     telefone             CHAR(11) CHECK ( telefone IS NULL OR telefone REGEXP '^[0-9]{11}$') -- Checando se o telefone esta no formato DDNNNNNNNNN
 
 );
@@ -25,9 +27,9 @@ CREATE TABLE IF NOT EXISTS PACIENTE
         ON UPDATE CASCADE,
     num_convenio      INT CHECK ( num_convenio IS NULL OR num_convenio > 0),
     grupo_sanguineo   VARCHAR(3) NOT NULL CHECK ( grupo_sanguineo IN ('A-', 'A+', 'B-', 'B+', 'AB-', 'AB+', 'O-', 'O+') ), -- Checando se o tipo sanguineo é valido
-    data_hora_entrada DATETIME NOT NULL,
+    data_hora_entrada DATETIME   NOT NULL,
     data_hora_saida   DATETIME,
-    leito             INT CHECK ( leito IS NULL OR leito > 0 )                                                    -- Leito pode ser NULL se o paciente não estiver mais internado
+    leito             INT CHECK ( leito IS NULL OR leito > 0 )                                                             -- Leito pode ser NULL se o paciente não estiver mais internado
 );
 
 CREATE TABLE IF NOT EXISTS PROFISSIONAL
@@ -101,6 +103,7 @@ CREATE TABLE IF NOT EXISTS PROCEDIMENTO_REALIZADO
     quantidade         INT NOT NULL CHECK ( quantidade > 0 ),
     tempo_real_minutos INT NOT NULL CHECK ( tempo_real_minutos > 0 ),
     observacao         VARCHAR(255),
+    -- faturamento_total pode ser diferente de faturamento_unitario * quantidade, por exemplo, se for dado um desconto no procedimento.
     faturamento_total  DECIMAL(9, 2),
     PRIMARY KEY (id_atendimento, id_procedimento)
 );
@@ -109,8 +112,8 @@ CREATE TABLE IF NOT EXISTS ESCALA
 (
     id_escala    INT PRIMARY KEY,
     id_unidade   INT NOT NULL REFERENCES UNIDADE (id_unidade),
-    dia_semana   ENUM ('Domingo', 'Segunda', 'Terca', 'Quarta', 'Quinta', 'Sexta', 'Sabado'),
-    turno        ENUM ('Manha', 'Tarde', 'Noite'),
+    dia_semana   ENUM ('Domingo', 'Segunda', 'Terca', 'Quarta', 'Quinta', 'Sexta', 'Sabado') NOT NULL ,
+    turno        ENUM ('Manha', 'Tarde', 'Noite') NOT NULL ,
     id_residente INT NOT NULL REFERENCES RESIDENTE (id_profissional)
         ON UPDATE CASCADE,
     id_preceptor INT NOT NULL REFERENCES PRECEPTOR (id_profissional)
