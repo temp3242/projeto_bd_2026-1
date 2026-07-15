@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS PACIENTE
     grupo_sanguineo   VARCHAR(3) NOT NULL CHECK ( grupo_sanguineo IN ('A-', 'A+', 'B-', 'B+', 'AB-', 'AB+', 'O-', 'O+') ), -- Checando se o tipo sanguineo é valido
     data_hora_entrada DATETIME   NOT NULL,
     data_hora_saida   DATETIME,
-    leito             INT CHECK ( leito IS NULL OR leito > 0 )                                                             -- Leito pode ser NULL se o paciente não estiver mais internado
+    leito             INT CHECK ( (data_hora_saida IS NOT NULL AND leito IS NULL) OR leito > 0)                                                             -- Leito pode ser NULL se o paciente não estiver mais internado
 );
 
 CREATE TABLE IF NOT EXISTS PROFISSIONAL
@@ -238,6 +238,10 @@ BEGIN
     IF NEW.data_hora_saida IS NOT NULL AND NEW.data_hora_saida > NOW() THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Data/hora de saida do paciente invalida!';
     END IF;
+
+    IF NEW.data_hora_saida IS NOT NULL AND NEW.leito IS NOT NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Paciente com data de saída não pode ter leito atribuído.';
+    END IF;
 END;
 DELIMITER ;
 DELIMITER //
@@ -250,6 +254,10 @@ BEGIN
     -- Paciente não pode ter alta no futuro
     IF NEW.data_hora_saida IS NOT NULL AND NEW.data_hora_saida > NOW() THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Data/hora de saida do paciente invalida!';
+    END IF;
+
+    IF NEW.data_hora_saida IS NOT NULL AND NEW.leito IS NOT NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Paciente com data de saída não pode ter leito atribuído.';
     END IF;
 END;
 DELIMITER ;
