@@ -29,7 +29,7 @@ WHERE id_pessoa = 3;
 -- Remover um procedimento realizado (apenas se ainda não houver faturamento associado – usar uma flag)
 WITH procs_faturamentos AS (SELECT PROC_R_2.id_procedimento,
                                    PROC_R_2.id_atendimento,
-                                   ISNULL(PROC_R_2.faturamento_total) AS NaoTemFaturamento
+                                   PROC_R_2.faturamento_total IS NULL AS NaoTemFaturamento
                             FROM PROCEDIMENTO_REALIZADO PROC_R_2)
 DELETE PROC_R
 FROM PROCEDIMENTO_REALIZADO PROC_R
@@ -42,4 +42,4 @@ WHERE PF.NaoTemFaturamento = 1;
 SELECT P.nome AS Residente, AVG(A.duracao_minutos) AS 'Duracao media do atendimento (minutos)'
 FROM ATENDIMENTO A
          JOIN PESSOA P ON A.id_residente = P.id_pessoa
-GROUP BY P.nome
+GROUP BY A.id_residente, P.nome
